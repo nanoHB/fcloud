@@ -1,4 +1,4 @@
-package filemanager
+package file
 
 type File struct {
 	Id             string `bson:"_id,omitempty" json:"id"`

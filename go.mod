@@ -1,4 +1,4 @@
-module test
+module github.com/nanoHB/fcloud
 
 go 1.22.6
 
