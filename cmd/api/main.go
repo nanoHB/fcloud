@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	"test/internal/server"
+
+	application "github.com/nanoHB/fcloud/internal/application"
 )
 
 func main() {
 
-	server := server.NewServer()
+	server := application.InitServer()
 
 	err := server.ListenAndServe()
 	if err != nil {
