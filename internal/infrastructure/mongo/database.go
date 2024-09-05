@@ -1,4 +1,4 @@
-package database
+package mongo
 
 import (
 	"context"
@@ -14,6 +14,7 @@ import (
 
 type Service interface {
 	Health() map[string]string
+	GetDbClient() *mongo.Client
 }
 
 type service struct {
@@ -50,4 +51,8 @@ func (s *service) Health() map[string]string {
 	return map[string]string{
 		"message": "It's healthy",
 	}
+}
+
+func (s *service) GetDbClient() *mongo.Client {
+	return s.db
 }

@@ -10,15 +10,15 @@ import (
 )
 
 type FileRepository struct {
-	mongoService service
+	mongoService Service
 }
 
-func NewFileRepository(service *service) FileRepository {
+func NewFileRepository(service *Service) FileRepository {
 	return FileRepository{mongoService: *service}
 }
 
 func (f FileRepository) GetFile(ctx context.Context, fileId string) (file.File, error) {
-	mongoClient := f.mongoService.db
+	mongoClient := f.mongoService.GetDbClient()
 	filesCollection := mongoClient.Database("fcloud").Collection("file")
 	objectId, err := primitive.ObjectIDFromHex(fileId)
 	filter := bson.M{"_id": objectId}
@@ -30,7 +30,7 @@ func (f FileRepository) GetFile(ctx context.Context, fileId string) (file.File, 
 }
 
 func (f FileRepository) SaveFile(ctx context.Context, file file.File) error {
-	mongoClient := f.mongoService.db
+	mongoClient := f.mongoService.GetDbClient()
 	filesCollection := mongoClient.Database("fcloud").Collection("file")
 	updateOption := options.Update().SetUpsert(true)
 	objectId, err := primitive.ObjectIDFromHex(file.Id)
@@ -43,7 +43,7 @@ func (f FileRepository) SaveFile(ctx context.Context, file file.File) error {
 }
 
 func (f FileRepository) GetList(ctx context.Context, searchCriteria any) ([]file.File, error) {
-	mongoClient := f.mongoService.db
+	mongoClient := f.mongoService.GetDbClient()
 	filesCollection := mongoClient.Database("fcloud").Collection("file")
 	cursor, err := filesCollection.Find(ctx, searchCriteria)
 	defer cursor.Close(ctx)
